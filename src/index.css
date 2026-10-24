@@ -1,0 +1,294 @@
+/* ======================================================
+   BRAUN BÜFFEL — Design System
+   ====================================================== */
+
+/* --- Design Tokens --- */
+:root {
+  /* Colors */
+  --color-ivory:        #F5F0E8;
+  --color-ivory-light:  #FAF7F2;
+  --color-cream:        #EDE6D8;
+  --color-champagne:    #C9B99A;
+  --color-champagne-muted: #B8A882;
+  --color-leather:      #8B6F47;
+  --color-leather-dark: #6B5334;
+  --color-espresso:     #2C1810;
+  --color-espresso-deep:#1A0E08;
+  --color-charcoal:     #1C1C1C;
+  --color-charcoal-mid: #2A2A2A;
+  --color-black:        #0A0A0A;
+  --color-white:        #FFFFFF;
+  --color-text-primary: #1A1A1A;
+  --color-text-secondary: #5A5A5A;
+  --color-text-light:   #F5F0E8;
+  --color-text-muted:   #8A8A8A;
+  --color-border:       #E0D8CC;
+  --color-border-dark:  #3A3A3A;
+
+  /* Typography */
+  --font-display: 'Cormorant Garamond', 'Georgia', serif;
+  --font-body:    'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+
+  /* Font Sizes — fluid scale */
+  --text-xs:    clamp(0.625rem,  0.55rem + 0.2vw,   0.75rem);
+  --text-sm:    clamp(0.75rem,   0.7rem + 0.15vw,    0.8125rem);
+  --text-base:  clamp(0.875rem,  0.82rem + 0.2vw,    1rem);
+  --text-lg:    clamp(1rem,      0.9rem + 0.3vw,     1.125rem);
+  --text-xl:    clamp(1.125rem,  1rem + 0.4vw,       1.375rem);
+  --text-2xl:   clamp(1.375rem,  1.1rem + 0.8vw,     1.875rem);
+  --text-3xl:   clamp(1.75rem,   1.3rem + 1.2vw,     2.5rem);
+  --text-4xl:   clamp(2.25rem,   1.5rem + 2vw,       3.5rem);
+  --text-5xl:   clamp(2.75rem,   1.8rem + 2.8vw,     4.5rem);
+  --text-hero:  clamp(3rem,      2rem + 3.5vw,       6rem);
+
+  /* Spacing */
+  --space-xs:   0.25rem;
+  --space-sm:   0.5rem;
+  --space-md:   1rem;
+  --space-lg:   1.5rem;
+  --space-xl:   2rem;
+  --space-2xl:  3rem;
+  --space-3xl:  4rem;
+  --space-4xl:  6rem;
+  --space-5xl:  8rem;
+  --space-6xl:  12rem;
+
+  /* Letter Spacing */
+  --tracking-tight:   -0.02em;
+  --tracking-normal:   0em;
+  --tracking-wide:     0.08em;
+  --tracking-wider:    0.15em;
+  --tracking-widest:   0.25em;
+
+  /* Transitions */
+  --ease-out:       cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out:    cubic-bezier(0.65, 0, 0.35, 1);
+  --duration-fast:  200ms;
+  --duration-base:  400ms;
+  --duration-slow:  800ms;
+
+  /* Layout */
+  --nav-height:     4.5rem;
+  --container-max:  1400px;
+  --container-padding: clamp(1.25rem, 3vw, 3rem);
+}
+
+/* --- Motion system ---
+   One beat = one viewport of scrolling on desktop, three quarters of one on a
+   phone. The numbers live in src/motion.ts and everything below derives from
+   them.
+   - A framed window (hero, campaign) opens across exactly one beat.
+   - A pinned interlude holds for exactly one beat.
+   - One glide (~1s, Lenis) and one scrub per input: ~0.55s behind the wheel,
+     ~0.38s behind a finger, because the OS already supplies touch momentum.
+     One spring per input, not one per section.
+   - `--window-rate` and `--motion-breath` are written at runtime so a beat
+     stays a viewport, and the window breath keeps its depth, at any size. */
+
+/* --- Reset & Base --- */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: auto; /* GSAP handles scrolling */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  font-weight: 300;
+  line-height: 1.6;
+  color: var(--color-text-primary);
+  background-color: var(--color-black);
+  overflow-x: hidden;
+}
+
+img,
+video {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+  color: inherit;
+}
+
+ul, ol {
+  list-style: none;
+}
+
+/* --- Utility Classes --- */
+.container {
+  width: 100%;
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: 0 var(--container-padding);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* --- Typography Utility --- */
+.font-display {
+  font-family: var(--font-display);
+}
+
+.font-body {
+  font-family: var(--font-body);
+}
+
+/* --- Lenis inertial scroll --- */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
+}
+
+/* --- Section Base --- */
+.section {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+.section--dark {
+  background-color: transparent;
+  color: var(--color-text-light);
+}
+
+.section--light {
+  background-color: var(--color-ivory);
+  color: var(--color-text-primary);
+}
+
+.section--espresso {
+  background-color: var(--color-espresso);
+  color: var(--color-text-light);
+}
+
+/* --- Button Styles --- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-sm);
+  font-family: var(--font-body);
+  font-size: var(--text-xs);
+  font-weight: 400;
+  letter-spacing: var(--tracking-widest);
+  text-transform: uppercase;
+  padding: var(--space-md) var(--space-2xl);
+  border: 1px solid transparent;
+  transition: all var(--duration-base) var(--ease-out);
+  white-space: nowrap;
+}
+
+.btn--primary {
+  background-color: var(--color-champagne-muted);
+  color: var(--color-espresso);
+  border-color: var(--color-champagne-muted);
+}
+
+.btn--primary:hover {
+  background-color: var(--color-champagne);
+  border-color: var(--color-champagne);
+}
+
+.btn--primary:focus-visible {
+  outline: 2px solid var(--color-champagne);
+  outline-offset: 3px;
+}
+
+.btn--outline {
+  background-color: transparent;
+  color: var(--color-text-light);
+  border-color: rgba(245, 240, 232, 0.3);
+}
+
+.btn--outline:hover {
+  border-color: var(--color-champagne);
+  color: var(--color-champagne);
+}
+
+.btn--outline:focus-visible {
+  outline: 2px solid var(--color-champagne);
+  outline-offset: 3px;
+}
+
+/* --- Scrollbar --- */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-black);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-charcoal-mid);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-text-muted);
+}
+
+/* --- Reduced Motion --- */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* --- Selection --- */
+::selection {
+  background-color: var(--color-champagne-muted);
+  color: var(--color-espresso);
+}

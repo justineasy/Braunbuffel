@@ -1,0 +1,291 @@
+/* ======================================================
+   PRELOADER — full-screen branded loading overlay
+   Smooth synchronized bull liquid-gold fill & typewriter reveal.
+   ====================================================== */
+
+.preloader {
+  --preloader-bg: #11100d;
+  --preloader-ink: #f3eee3;
+  --preloader-gold: #b08d4a;
+  --preloader-thread: #f0d99a;
+  --preloader-mute: #8d867a;
+
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding:
+    max(1rem, env(safe-area-inset-top, 0px))
+    max(1rem, env(safe-area-inset-right, 0px))
+    max(1rem, env(safe-area-inset-bottom, 0px))
+    max(1rem, env(safe-area-inset-left, 0px));
+  overflow: hidden;
+  background: var(--preloader-bg);
+  color: var(--preloader-ink);
+  font-family: 'Jost', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  opacity: 1;
+  transition: opacity 820ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  will-change: opacity;
+}
+
+body.preloader-visible {
+  overflow: hidden;
+}
+
+.preloader--done {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* --- Handover: the mark becomes the transition ---
+   The wordmark and typed line leave, the dark plate dissolves around the bull,
+   and the bull keeps growing over the home for a beat before the whole overlay
+   clears. The background clears first so the page appears *through* the mark. */
+.preloader--zooming {
+  background-color: transparent;
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    background-color 1500ms cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 820ms cubic-bezier(0.4, 0, 0.2, 1) 1560ms;
+}
+
+.preloader--zooming .preloader__bull {
+  transform: scale(3.9);
+  transition: transform 2300ms cubic-bezier(0.4, 0, 0.16, 1);
+  will-change: transform;
+}
+
+.preloader--zooming .preloader__word {
+  opacity: 0;
+  transform: translateY(-10px);
+  transition:
+    opacity 480ms ease,
+    transform 700ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.preloader--zooming .preloader__type {
+  animation: preloader-type-out 460ms ease forwards;
+}
+
+@keyframes preloader-type-out {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+.preloader__bloom {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: min(130vw, 1000px);
+  height: min(130vw, 1000px);
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(240, 217, 154, 0.17) 0%,
+    rgba(176, 141, 74, 0.06) 38%,
+    rgba(17, 16, 13, 0) 68%
+  );
+  transform: translate(-50%, -50%) scale(0.55);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 0;
+  transition:
+    opacity 900ms ease,
+    transform 2300ms cubic-bezier(0.4, 0, 0.16, 1);
+  will-change: opacity, transform;
+}
+
+.preloader--zooming .preloader__bloom {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1.15);
+}
+
+.preloader__wrap {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 22px;
+  width: min(86vw, 380px);
+}
+
+/* --- Bull --- */
+.preloader__bull {
+  display: block;
+  width: min(70vw, 290px);
+  height: auto;
+  overflow: visible;
+  opacity: 0;
+  animation: preloader-in 0.7s 0.05s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+/* The completion pop runs on the inner group so the outer SVG is free to
+   transition its scale during the handover. */
+.preloader__body {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.preloader__bull--done .preloader__body {
+  animation: preloader-pop 0.65s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+@keyframes preloader-in {
+  to { opacity: 1; }
+}
+
+@keyframes preloader-pop {
+  40% { transform: scale(1.045); }
+}
+
+.preloader__ghost {
+  fill: var(--preloader-gold);
+  opacity: 0.16;
+  fill-rule: evenodd;
+}
+
+.preloader__lvl {
+  transition: transform 90ms linear;
+  will-change: transform;
+}
+
+.preloader__wave {
+  animation: preloader-wave 2.2s linear infinite;
+}
+
+@keyframes preloader-wave {
+  to { transform: translateX(-22px); }
+}
+
+.preloader__sheen {
+  opacity: 0;
+}
+
+.preloader__bull--done .preloader__sheen {
+  animation: preloader-sweep 1.1s 0.05s ease forwards;
+}
+
+@keyframes preloader-sweep {
+  0% { opacity: 1; transform: translateX(-60px); }
+  100% { opacity: 1; transform: translateX(60px); }
+}
+
+/* --- Wordmark --- */
+.preloader__word {
+  display: flex;
+  font-family: 'Jost', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  font-weight: 500;
+  font-size: clamp(22px, 6.4vw, 30px);
+  letter-spacing: 0.18em;
+  white-space: nowrap;
+}
+
+.preloader__word span {
+  opacity: 0;
+  transform: translateY(6px);
+  animation: preloader-up 0.55s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+.preloader__word .preloader__word-space {
+  width: 0.5em;
+}
+
+@keyframes preloader-up {
+  to { opacity: 1; transform: none; }
+}
+
+/* --- Typed line --- */
+.preloader__type {
+  position: relative;
+  margin-top: 6px;
+  font-family: 'Jost', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 1.2;
+  letter-spacing: 0.42em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  opacity: 0;
+  animation: preloader-in 0.45s 0.25s ease forwards;
+}
+
+.preloader__type-full {
+  visibility: hidden;
+}
+
+.preloader__type-full .preloader__type-b {
+  margin-left: 0.9em;
+}
+
+.preloader__type-typed {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: inline-flex;
+  align-items: center;
+}
+
+.preloader__type-a {
+  color: var(--preloader-gold);
+}
+
+.preloader__type-b {
+  color: var(--preloader-mute);
+  margin-left: 0.9em;
+}
+
+.preloader__caret {
+  display: inline-block;
+  width: 1.5px;
+  height: 1.05em;
+  background: var(--preloader-gold);
+  margin-left: 0.12em;
+  animation: preloader-blink 0.9s steps(1) infinite;
+}
+
+@keyframes preloader-blink {
+  50% { opacity: 0; }
+}
+
+/* --- Reduced motion --- */
+@media (prefers-reduced-motion: reduce) {
+  .preloader,
+  .preloader__bull,
+  .preloader__word span,
+  .preloader__type,
+  .preloader__sheen {
+    animation-duration: 0.01s !important;
+    animation-delay: 0s !important;
+  }
+
+  .preloader__word span {
+    opacity: 1;
+    transform: none;
+  }
+
+  .preloader__type {
+    opacity: 1;
+  }
+
+  .preloader__lvl {
+    transition: none;
+  }
+
+  .preloader__wave,
+  .preloader__caret {
+    animation: none;
+  }
+
+  .preloader--done {
+    opacity: 0;
+    transition: opacity 220ms ease;
+  }
+
+  .preloader__bloom {
+    display: none;
+  }
+}

@@ -1,0 +1,248 @@
+/* ======================================================
+   SCROLL SCENES — pinned, scrubbed interludes
+   ====================================================== */
+
+.scroll-scene {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: 100vh;
+  min-height: 100svh;
+  padding: clamp(4.5rem, 11vh, 8rem) var(--container-padding);
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.scroll-scene__inner {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: var(--container-max);
+  margin: 0 auto;
+}
+
+/* --- Variants --- */
+
+.scroll-scene--ink {
+  background:
+    radial-gradient(120% 90% at 78% 12%, rgba(201, 185, 154, 0.11) 0%, transparent 58%),
+    linear-gradient(180deg, #0b0a09 0%, #100d0a 52%, #0b0a09 100%);
+  color: var(--color-text-light);
+  border-top: 1px solid rgba(201, 185, 154, 0.16);
+  border-bottom: 1px solid rgba(201, 185, 154, 0.16);
+}
+
+.scroll-scene--paper {
+  background: var(--color-ivory);
+  color: var(--color-text-primary);
+  border-top: 1px solid rgba(26, 22, 18, 0.1);
+  border-bottom: 1px solid rgba(26, 22, 18, 0.1);
+}
+
+/* --- Shared type --- */
+
+.scroll-scene__eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  font-size: 0.62rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--color-champagne);
+}
+
+.scroll-scene--paper .scroll-scene__eyebrow {
+  color: var(--color-leather);
+}
+
+.scroll-scene__eyebrow::before {
+  content: '';
+  width: 2.4rem;
+  height: 1px;
+  background: currentColor;
+  opacity: 0.55;
+}
+
+.scroll-scene__eyebrow--center {
+  justify-content: center;
+}
+
+.scroll-scene__eyebrow--center::after {
+  content: '';
+  width: 2.4rem;
+  height: 1px;
+  background: currentColor;
+  opacity: 0.55;
+}
+
+/* --- Statement line --- */
+
+.scroll-scene__line {
+  margin-top: clamp(1.6rem, 4vh, 2.6rem);
+  max-width: 20ch;
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: clamp(2.35rem, 5.6vw, 5rem);
+  line-height: 1.04;
+  letter-spacing: -0.018em;
+  text-wrap: balance;
+}
+
+.scroll-scene__word {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+  margin-right: 0.24em;
+  padding-bottom: 0.08em;
+}
+
+.scroll-scene__word-inner {
+  display: inline-block;
+  will-change: transform;
+}
+
+.scroll-scene__word-inner.is-italic {
+  font-style: italic;
+  color: var(--color-champagne);
+}
+
+/* Oversized ghost word behind the statement. */
+.scroll-scene__ghost {
+  position: absolute;
+  right: -0.04em;
+  bottom: -0.34em;
+  z-index: 1;
+  font-family: var(--font-display);
+  font-size: clamp(9rem, 22vw, 20rem);
+  line-height: 0.78;
+  letter-spacing: -0.03em;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(201, 185, 154, 0.13);
+  pointer-events: none;
+  user-select: none;
+  will-change: transform;
+}
+
+/* --- Foot row --- */
+
+.scroll-scene__foot {
+  display: flex;
+  align-items: center;
+  gap: 1.1rem;
+  margin-top: clamp(3rem, 9vh, 6rem);
+  font-size: 0.58rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(245, 240, 232, 0.52);
+}
+
+.scroll-scene__foot-rule {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(201, 185, 154, 0.5), rgba(201, 185, 154, 0.06));
+  transform-origin: left center;
+}
+
+.scroll-scene__foot-item--end {
+  color: var(--color-champagne);
+}
+
+/* --- 1887 scene --- */
+
+.scroll-scene--founded .scroll-scene__inner {
+  text-align: center;
+}
+
+.scroll-scene__numeral {
+  margin-top: clamp(1rem, 3vh, 2rem);
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: clamp(8.5rem, 25vw, 21rem);
+  line-height: 0.78;
+  letter-spacing: -0.035em;
+  font-variant-numeric: lining-nums;
+  color: #171310;
+  transform-origin: center center;
+  will-change: transform;
+}
+
+.scroll-scene__facts {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.5rem;
+  max-width: 62rem;
+  margin: clamp(2.5rem, 7vh, 4.5rem) auto 0;
+  padding-top: 1.35rem;
+  border-top: 1px solid rgba(26, 22, 18, 0.14);
+  text-align: left;
+}
+
+.scroll-scene__fact span {
+  display: block;
+  font-size: 0.56rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: #8a7c63;
+}
+
+.scroll-scene__fact strong {
+  display: block;
+  margin-top: 0.4rem;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  color: var(--color-text-primary);
+}
+
+/* --- Responsive --- */
+
+@media (max-width: 768px) {
+  .scroll-scene__line {
+    font-size: clamp(2.1rem, 8.6vw, 3.1rem);
+    max-width: 16ch;
+  }
+
+  .scroll-scene__foot {
+    flex-wrap: wrap;
+    gap: 0.7rem;
+    font-size: 0.54rem;
+    letter-spacing: 0.16em;
+  }
+
+  .scroll-scene__foot-rule {
+    flex-basis: 100%;
+  }
+
+  .scroll-scene__numeral {
+    font-size: clamp(7rem, 33vw, 11rem);
+  }
+
+  .scroll-scene__facts {
+    grid-template-columns: 1fr;
+    gap: 0;
+    max-width: 22rem;
+    text-align: center;
+  }
+
+  .scroll-scene__fact {
+    padding: 0.8rem 0;
+    border-bottom: 1px solid rgba(26, 22, 18, 0.08);
+  }
+
+  .scroll-scene__fact:last-child {
+    border-bottom: 0;
+  }
+
+  .scroll-scene__ghost {
+    right: -0.12em;
+    bottom: 0.05em;
+    font-size: clamp(9rem, 40vw, 14rem);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-scene__ghost {
+    will-change: auto;
+  }
+}
